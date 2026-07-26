@@ -1,0 +1,64 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --font-display: "Fraunces", ui-serif, Georgia, serif;
+    --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+    --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-paper text-ink-800 antialiased dark:bg-ink-950 dark:text-ink-50;
+  }
+
+  ::selection {
+    @apply bg-signal-200 text-ink-900 dark:bg-signal-800 dark:text-white;
+  }
+
+  :focus-visible {
+    @apply outline-none ring-2 ring-signal-500 ring-offset-2 ring-offset-paper dark:ring-offset-ink-950;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer components {
+  .container-page {
+    @apply mx-auto w-full max-w-container px-6 lg:px-8;
+  }
+
+  .eyebrow {
+    @apply text-xs font-semibold uppercase tracking-[0.14em] text-signal-600 dark:text-signal-400;
+  }
+
+  .card {
+    @apply rounded-2xl border border-ink-100 bg-white shadow-card transition-shadow hover:shadow-soft dark:border-ink-800 dark:bg-ink-900;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-full bg-ink-900 px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-ink-800 dark:bg-white dark:text-ink-900 dark:hover:bg-ink-100;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 rounded-full border border-ink-200 bg-white px-5 py-2.5 text-sm font-semibold text-ink-800 transition-colors hover:border-ink-300 hover:bg-ink-50 dark:border-ink-800 dark:bg-ink-900 dark:text-ink-100 dark:hover:border-ink-700 dark:hover:bg-ink-800;
+  }
+
+  .btn-outline-accent {
+    @apply inline-flex items-center justify-center gap-2 rounded-full border border-signal-200 bg-signal-50 px-5 py-2.5 text-sm font-semibold text-signal-700 transition-colors hover:border-signal-300 hover:bg-signal-100 dark:border-signal-800 dark:bg-signal-900/30 dark:text-signal-300 dark:hover:border-signal-700 dark:hover:bg-signal-800/50;
+  }
+}

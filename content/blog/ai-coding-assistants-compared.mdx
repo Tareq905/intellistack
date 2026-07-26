@@ -1,0 +1,26 @@
+---
+title: "AI Coding Assistants Compared: What Actually Ships Production Code"
+excerpt: "We ran three AI coding assistants against 40 real pull requests. Here's how they held up outside the demo."
+coverImage: "/covers/ai-coding-compared.svg"
+category: "ai-coding"
+tags: ["ai coding", "developer tools", "engineering"]
+author: "tareq"
+publishedAt: "2026-05-30"
+featured: true
+---
+
+Every AI coding assistant looks impressive in a five-minute demo. The real test is what happens on pull request forty, in a codebase with years of accumulated context, edge cases, and other people's naming conventions.
+
+We ran three tools — CodeWright among them — against the same 40 pull requests across two production codebases: a Rails monolith and a TypeScript microservices stack.
+
+## Context window matters more than raw model quality
+
+The single biggest differentiator wasn't which underlying model a tool used. It was how well it retrieved and used relevant context from the rest of the codebase. Tools that only see the open file produce plausible-looking code that quietly breaks conventions three directories away.
+
+## Refactor quality separated the pack
+
+Generating new code is the easy case. Refactoring existing code without changing behavior is where most tools stumbled — introducing subtle regressions that passed a shallow test suite but failed integration tests.
+
+## Our take
+
+If your team ships production code daily and refactors existing systems regularly, it's worth paying for a tool with strong codebase-wide context, even at a premium price. If you're mostly scaffolding new, isolated features, a cheaper option will serve you fine.
