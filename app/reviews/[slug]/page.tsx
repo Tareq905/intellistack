@@ -1,3 +1,4 @@
+export const runtime = "edge";
 import { notFound } from "next/navigation";
 import Script from "next/script";
 import { reviews, getReviewBySlug } from "@/lib/data/reviews";

@@ -1,3 +1,4 @@
+export const runtime = "edge";
 import { Suspense } from "react";
 import { buildMetadata } from "@/lib/seo";
 import { getAllPosts } from "@/lib/blog";

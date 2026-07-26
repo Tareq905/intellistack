@@ -1,3 +1,4 @@
+export const runtime = "edge";
 import { CheckCircle2 } from "lucide-react";
 import { buildMetadata } from "@/lib/seo";
 import { NewsletterSignup } from "@/components/affiliate/NewsletterSignup";
