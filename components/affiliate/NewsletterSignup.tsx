@@ -7,10 +7,10 @@ export function NewsletterSignup({ compact = false }: { compact?: boolean }) {
         <>
           <p className="eyebrow">Newsletter</p>
           <h2 className="mx-auto mt-3 max-w-md font-display text-2xl font-semibold text-ink-900 dark:text-ink-50">
-            The best new AI tools, once a week
+            The Best AI Tools, Delivered Weekly
           </h2>
           <p className="mx-auto mt-2 max-w-sm text-sm text-ink-500 dark:text-ink-400">
-            No spam, no fluff — just what&apos;s worth trying, reviewed by our editors.
+            Get honest AI tool reviews, comparison guides, productivity tips, and exclusive software deals delivered every week.
           </p>
         </>
       )}

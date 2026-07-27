@@ -3,8 +3,8 @@ import { authors } from "@/lib/data/authors";
 import { CTASection } from "@/components/affiliate/CTASection";
 
 export const metadata = buildMetadata({
-  title: "About IntelliStack",
-  description: "IntelliStack is an independent publication reviewing AI tools, SaaS, and automation software.",
+  title: "About NeuralForge",
+  description: "NeuralForge is an independent publication reviewing AI tools, SaaS, and automation software.",
   path: "/about",
 });
 

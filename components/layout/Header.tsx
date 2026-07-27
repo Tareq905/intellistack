@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { Menu, X, ArrowUpRight } from "lucide-react";
+import { Menu, X, ArrowUpRight, Search } from "lucide-react";
 import { siteConfig } from "@/lib/config";
 import { cn } from "@/lib/utils";
 import { ThemeToggle } from "@/components/theme-toggle";
@@ -31,6 +31,18 @@ export function Header() {
             </Link>
           ))}
         </nav>
+
+        <div className="hidden flex-1 items-center justify-center px-8 md:flex">
+          <div className="relative w-full max-w-sm">
+            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-ink-400" />
+            <input
+              type="text"
+              placeholder="Search AI tools..."
+              className="w-full rounded-full border border-ink-200 bg-white/50 py-1.5 pl-9 pr-4 text-sm text-ink-900 outline-none transition-colors focus:border-signal-400 focus:bg-white dark:border-ink-800 dark:bg-ink-900/50 dark:text-ink-100 dark:focus:border-signal-500 dark:focus:bg-ink-900"
+            />
+          </div>
+        </div>
+
 
         <div className="flex items-center gap-2 md:gap-3">
           <div className="hidden items-center gap-3 md:flex">

@@ -4,7 +4,7 @@ import { LegalLayout } from "@/components/layout/LegalLayout";
 
 export const metadata = buildMetadata({
   title: "Disclaimer",
-  description: "General disclaimer covering the accuracy and use of content published on IntelliStack.",
+  description: "General disclaimer covering the accuracy and use of content published on NeuralForge.",
   path: "/disclaimer",
 });
 

@@ -4,7 +4,7 @@ import { LegalLayout } from "@/components/layout/LegalLayout";
 
 export const metadata = buildMetadata({
   title: "Privacy Policy",
-  description: "How IntelliStack collects, uses, and protects your personal information.",
+  description: "How NeuralForge collects, uses, and protects your personal information.",
   path: "/privacy-policy",
 });
 

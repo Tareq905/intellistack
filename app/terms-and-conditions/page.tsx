@@ -4,7 +4,7 @@ import { LegalLayout } from "@/components/layout/LegalLayout";
 
 export const metadata = buildMetadata({
   title: "Terms & Conditions",
-  description: "The terms and conditions governing your use of the IntelliStack website.",
+  description: "The terms and conditions governing your use of the NeuralForge website.",
   path: "/terms-and-conditions",
 });
 

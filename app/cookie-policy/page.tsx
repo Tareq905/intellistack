@@ -4,7 +4,7 @@ import { LegalLayout } from "@/components/layout/LegalLayout";
 
 export const metadata = buildMetadata({
   title: "Cookie Policy",
-  description: "How IntelliStack uses cookies and similar tracking technologies.",
+  description: "How NeuralForge uses cookies and similar tracking technologies.",
   path: "/cookie-policy",
 });
 

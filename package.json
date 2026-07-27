@@ -1,8 +1,8 @@
 {
-  "name": "intellistack",
+  "name": "neuralforge",
   "version": "1.0.0",
   "private": true,
-  "description": "IntelliStack — discover the best AI tools, SaaS, automation and developer software.",
+  "description": "NeuralForge — discover the best AI tools, SaaS, automation and developer software.",
   "scripts": {
     "build": "next build",
     "dev": "next dev",

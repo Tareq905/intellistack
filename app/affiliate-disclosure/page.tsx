@@ -4,7 +4,7 @@ import { LegalLayout } from "@/components/layout/LegalLayout";
 
 export const metadata = buildMetadata({
   title: "Affiliate Disclosure",
-  description: "How IntelliStack uses affiliate links and how that relates to our editorial ratings.",
+  description: "How NeuralForge uses affiliate links and how that relates to our editorial ratings.",
   path: "/affiliate-disclosure",
 });
 

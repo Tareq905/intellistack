@@ -1,4 +1,4 @@
-# IntelliStack
+# NeuralForge
 
 A production-grade, SEO-optimized affiliate content website for AI tools, SaaS, automation, developer tools, SEO software, email marketing platforms, and productivity software. Built with Next.js 15 (App Router), TypeScript, Tailwind CSS, and MDX.
 
