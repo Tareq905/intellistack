@@ -12,15 +12,25 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-ink-100/80 bg-paper/90 backdrop-blur-sm dark:border-ink-800 dark:bg-ink-950/90">
-      <div className="container-page flex h-16 items-center justify-between">
-        <Link href="/" className="flex items-center gap-2 font-display text-lg font-semibold text-ink-900 dark:text-ink-50">
-          <span className="flex h-7 w-7 items-center justify-center rounded-md bg-ink-900 text-sm text-white dark:bg-white dark:text-ink-900">
-            IS
+      <div className="container-page flex h-16 items-center gap-8 justify-between">
+
+        {/* Logo */}
+        <Link
+          href="/"
+          className="flex items-center gap-2 font-display text-xl font-bold tracking-tight text-ink-900 dark:text-ink-50 shrink-0"
+        >
+          <span className="relative flex h-2.5 w-2.5">
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-signal-500 opacity-60"></span>
+            <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-signal-500"></span>
           </span>
-          {siteConfig.name}
+          <span>Quantas</span>
         </Link>
 
-        <nav className="hidden items-center gap-8 md:flex">
+        {/* Divider */}
+        <span className="hidden md:block h-5 w-px bg-ink-200 dark:bg-ink-700 shrink-0" />
+
+        {/* Desktop Nav */}
+        <nav className="hidden items-center gap-6 md:flex flex-1">
           {siteConfig.nav.map((item) => (
             <Link
               key={item.href}
@@ -32,8 +42,9 @@ export function Header() {
           ))}
         </nav>
 
-        <div className="hidden flex-1 items-center justify-center px-8 md:flex">
-          <div className="relative w-full max-w-sm">
+        {/* Search */}
+        <div className="hidden flex-1 items-center justify-center px-4 md:flex max-w-xs">
+          <div className="relative w-full">
             <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-ink-400" />
             <input
               type="text"
@@ -43,8 +54,8 @@ export function Header() {
           </div>
         </div>
 
-
-        <div className="flex items-center gap-2 md:gap-3">
+        {/* Right Actions */}
+        <div className="flex items-center gap-2 md:gap-3 shrink-0">
           <div className="hidden items-center gap-3 md:flex">
             <Link href="/newsletter" className="btn-secondary">
               Newsletter
@@ -54,7 +65,7 @@ export function Header() {
               <ArrowUpRight className="h-4 w-4" />
             </Link>
           </div>
-          
+
           <ThemeToggle />
 
           <button
@@ -69,6 +80,7 @@ export function Header() {
         </div>
       </div>
 
+      {/* Mobile Menu */}
       <div
         className={cn(
           "overflow-hidden border-t border-ink-100 bg-paper transition-[max-height] duration-300 md:hidden dark:border-ink-800 dark:bg-ink-950",

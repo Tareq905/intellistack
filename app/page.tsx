@@ -11,7 +11,7 @@ import { ReviewCard } from "@/components/affiliate/ReviewCard";
 import { NewsletterSignup } from "@/components/affiliate/NewsletterSignup";
 
 export const metadata = buildMetadata({
-  title: "NeuralForge — Discover the Best AI Tools",
+  title: "Quantas — Discover the Best AI Tools",
   description:
     "We test AI tools, compare them side-by-side, and publish honest reviews so you can confidently choose the right software for your workflow.",
   path: "/",

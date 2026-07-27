@@ -61,7 +61,7 @@ export default async function ComparisonDetailPage({ params }: { params: Promise
       description: comparison.excerpt,
       path: `/comparisons/${comparison.slug}`,
       image: comparison.coverImage,
-      authorName: "NeuralForge Editorial",
+      authorName: "Quantas Editorial",
       publishedAt: comparison.publishedAt,
     }),
     breadcrumbJsonLd([

@@ -14,8 +14,8 @@ export async function submitContactForm(formData: FormData) {
   // TODO: send this via your email provider (e.g. Resend) or forward to a CRM / helpdesk.
   // Example:
   // await resend.emails.send({
-  //   from: "NeuralForge <noreply@neuralforge.io>",
-  //   to: "hello@neuralforge.io",
+  //   from: "Quantas <noreply@quantas.io>",
+  //   to: "hello@quantas.io",
   //   subject: `[Contact] ${topic}: ${name}`,
   //   text: message,
   //   replyTo: email,

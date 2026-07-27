@@ -1,14 +1,14 @@
 export const siteConfig = {
-  name: "NeuralForge",
+  name: "Quantas",
   tagline: "Independent AI tool reviews and side-by-side comparisons.",
   description:
-    "NeuralForge is your trusted platform for independent AI tool reviews. We test AI tools, compare them side-by-side, and publish honest reviews so you can confidently choose the right software for your workflow.",
-  url: "https://www.neuralforge.io",
+    "Quantas is your trusted platform for independent AI tool reviews. We test AI tools, compare them side-by-side, and publish honest reviews so you can confidently choose the right software for your workflow.",
+  url: "https://www.quantas.io",
   ogImage: "/og/default.png",
-  email: "hello@neuralforge.io",
-  twitter: "@neuralforge",
+  email: "hello@quantas.io",
+  twitter: "@quantas",
   links: {
-    twitter: "https://twitter.com/neuralforge",
+    twitter: "https://twitter.com/quantas",
     linkedin: "https://www.linkedin.com/in/md-tareq-shah-alam/",
     github: "https://github.com/Tareq905",
     huggingface: "https://huggingface.co/tareq052",

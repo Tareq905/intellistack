@@ -74,11 +74,13 @@ export const metadata: Metadata = {
 };
 
 import { ThemeProvider } from "@/components/theme-provider";
+import NextTopLoader from "nextjs-toploader";
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${fraunces.variable} ${inter.variable} ${jetbrainsMono.variable}`} suppressHydrationWarning>
       <body className="flex min-h-screen flex-col font-sans">
+        <NextTopLoader color="#2563eb" showSpinner={false} />
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <Script
             id="organization-jsonld"

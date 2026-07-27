@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Twitter, Linkedin, Github, Smile } from "lucide-react";
+import { Linkedin, Github, Smile } from "lucide-react";
 import { siteConfig } from "@/lib/config";
 
 export function Footer() {
@@ -9,11 +9,12 @@ export function Footer() {
     <footer className="border-t border-ink-100 bg-white dark:border-ink-800 dark:bg-ink-950">
       <div className="container-page grid gap-10 py-14 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
         <div>
-          <Link href="/" className="flex items-center gap-2 font-display text-lg font-semibold text-ink-900 dark:text-ink-50">
-            <span className="flex h-7 w-7 items-center justify-center rounded-md bg-ink-900 text-sm text-white dark:bg-white dark:text-ink-900">
-              IS
+          <Link href="/" className="flex items-center font-display text-xl font-bold tracking-tight text-ink-900 dark:text-ink-50 group">
+            <span className="relative flex h-2.5 w-2.5 mr-1.5 mb-0.5">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-signal-500 opacity-60"></span>
+              <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-signal-500"></span>
             </span>
-            {siteConfig.name}
+            Quantas
           </Link>
           <p className="mt-4 max-w-sm text-sm leading-relaxed text-ink-500 dark:text-ink-400">{siteConfig.description}</p>
           <div className="mt-5 flex gap-3">

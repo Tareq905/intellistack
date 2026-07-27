@@ -6,7 +6,7 @@ import { submitContactForm } from "@/app/actions/contact";
 
 export const metadata = buildMetadata({
   title: "Contact",
-  description: "Get in touch with the NeuralForge editorial team — tool suggestions, corrections, or partnerships.",
+  description: "Get in touch with the Quantas editorial team — tool suggestions, corrections, or partnerships.",
   path: "/contact",
 });
 
