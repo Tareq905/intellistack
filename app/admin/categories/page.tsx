@@ -4,7 +4,7 @@ import prisma from '@/lib/prisma'
 import { deleteCategory } from './actions'
 
 export default async function AdminCategoriesPage() {
-  let categories: Awaited<ReturnType<typeof prisma.category.findMany>> = []
+  let categories: Awaited<ReturnType<typeof prisma.category.findMany<{ include: { _count: { select: { tools: true } } } }>>> = []
   try {
     categories = await prisma.category.findMany({
       include: { _count: { select: { tools: true } } },
