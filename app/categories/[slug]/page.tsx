@@ -1,4 +1,4 @@
-export const runtime = "edge";
+
 import { notFound } from "next/navigation";
 import Script from "next/script";
 import { categories, getCategoryBySlug } from "@/lib/data/categories";

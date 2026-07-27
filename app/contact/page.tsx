@@ -1,4 +1,4 @@
-export const runtime = "edge";
+
 import { Mail } from "lucide-react";
 import { buildMetadata } from "@/lib/seo";
 import { siteConfig } from "@/lib/config";

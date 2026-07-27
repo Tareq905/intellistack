@@ -1,4 +1,4 @@
-export const runtime = "edge";
+
 import { notFound } from "next/navigation";
 import Script from "next/script";
 import { compileMDX } from "next-mdx-remote/rsc";
