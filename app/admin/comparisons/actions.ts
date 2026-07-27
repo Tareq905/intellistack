@@ -5,12 +5,6 @@ import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { z } from 'zod'
 
-const sectionSchema = z.object({
-  title: z.string().min(1),
-  content: z.string().min(1),
-  winnerId: z.string().optional().or(z.literal('')),
-})
-
 const comparisonSchema = z.object({
   slug: z.string().min(1).regex(/^[a-z0-9-]+$/),
   toolAId: z.string().min(1),
@@ -53,7 +47,7 @@ export async function createComparison(formData: FormData) {
       ...data,
       winnerId: winnerId || null,
       published: data.published ?? false,
-      comparisonSections: { create: sections },
+      sections: { create: sections },
     },
   })
 
