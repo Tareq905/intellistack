@@ -87,7 +87,7 @@ export default function ComparisonForm({ tools }: Props) {
         </div>
 
         <label className="flex items-center gap-2 cursor-pointer">
-          <input type="checkbox" name="published" className="w-4 h-4 rounded accent-signal-600" />
+          <input type="checkbox" name="published" defaultChecked className="w-4 h-4 rounded accent-signal-600" />
           <span className="text-sm text-ink-700 dark:text-ink-300">Published</span>
         </label>
       </section>

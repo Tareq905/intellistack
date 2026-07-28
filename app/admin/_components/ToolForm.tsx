@@ -111,7 +111,7 @@ export default function ToolForm({ categories, tool }: Props) {
             <span className="text-sm text-ink-700 dark:text-ink-300">Has Free Tier</span>
           </label>
           <label className="flex items-center gap-2 cursor-pointer">
-            <input type="checkbox" name="published" defaultChecked={tool?.published ?? false} className="w-4 h-4 rounded accent-signal-600" />
+            <input type="checkbox" name="published" defaultChecked={tool?.published ?? true} className="w-4 h-4 rounded accent-signal-600" />
             <span className="text-sm text-ink-700 dark:text-ink-300">Published</span>
           </label>
           <label className="flex items-center gap-2 cursor-pointer">

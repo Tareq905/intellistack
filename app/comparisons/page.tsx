@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { buildMetadata } from "@/lib/seo";
-import { comparisons } from "@/lib/data/comparisons";
+import { getPublishedComparisons } from "@/lib/cms/comparisons";
 import { formatDate } from "@/lib/utils";
 
 export const metadata = buildMetadata({
@@ -10,7 +10,9 @@ export const metadata = buildMetadata({
   path: "/comparisons",
 });
 
-export default function ComparisonsPage() {
+export default async function ComparisonsPage() {
+  const comparisons = await getPublishedComparisons();
+
   return (
     <div className="container-page py-16">
       <header className="mx-auto max-w-2xl text-center">

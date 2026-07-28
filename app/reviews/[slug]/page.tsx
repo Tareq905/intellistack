@@ -1,8 +1,14 @@
 
 import { notFound } from "next/navigation";
 import Script from "next/script";
-import { reviews, getReviewBySlug } from "@/lib/data/reviews";
-import { getProductBySlug, getProductsByCategory } from "@/lib/data/products";
+import { compileMDX } from "next-mdx-remote/rsc";
+import {
+  getPublishedToolSlugs,
+  getReviewBySlugFromDb,
+  getProductBySlugFromDb,
+  getProductsByCategoryFromDb,
+} from "@/lib/cms/tools";
+import { mdxComponents } from "@/mdx-components";
 import { Rating } from "@/components/ui/Rating";
 import { ProsCons } from "@/components/affiliate/ProsCons";
 import { RelatedProducts } from "@/components/affiliate/RelatedProducts";
@@ -10,13 +16,14 @@ import { CTASection } from "@/components/affiliate/CTASection";
 import { buildMetadata, articleJsonLd, breadcrumbJsonLd, productReviewJsonLd } from "@/lib/seo";
 import { formatDate } from "@/lib/utils";
 
-export function generateStaticParams() {
-  return reviews.map((review) => ({ slug: review.slug }));
+export async function generateStaticParams() {
+  const slugs = await getPublishedToolSlugs();
+  return slugs.map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const review = getReviewBySlug(slug);
+  const review = await getReviewBySlugFromDb(slug);
   if (!review) return {};
 
   return buildMetadata({
@@ -33,13 +40,18 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 export default async function ReviewDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const review = getReviewBySlug(slug);
+  const review = await getReviewBySlugFromDb(slug);
   if (!review) notFound();
 
-  const product = getProductBySlug(review.productSlug);
+  const product = await getProductBySlugFromDb(review.productSlug);
   const alternatives = product
-    ? getProductsByCategory(product.category).filter((p) => p.slug !== product.slug).slice(0, 3)
+    ? (await getProductsByCategoryFromDb(product.category)).filter((p) => p.slug !== product.slug).slice(0, 3)
     : [];
+
+  const { content: reviewBody } = await compileMDX({
+    source: review.fullReview,
+    components: mdxComponents,
+  });
 
   const jsonLd = [
     articleJsonLd({
@@ -99,6 +111,8 @@ export default async function ReviewDetailPage({ params }: { params: Promise<{ s
           <p className="eyebrow">Verdict</p>
           <p className="mt-2 text-ink-700 dark:text-ink-200">{review.verdict}</p>
         </div>
+
+        <div className="prose prose-ink mx-auto mt-10 dark:prose-invert">{reviewBody}</div>
 
         <div className="mt-10">
           <ProsCons pros={review.pros} cons={review.cons} />

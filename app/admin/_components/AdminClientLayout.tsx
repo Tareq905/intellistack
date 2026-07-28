@@ -15,6 +15,7 @@ import {
   Settings,
   LogOut,
   Menu,
+  Sheet,
 } from 'lucide-react'
 import { useState } from 'react'
 import { signOut } from '../actions'
@@ -28,6 +29,7 @@ const navItems = [
   { name: 'Newsletter', href: '/admin/newsletter', icon: Mail },
   { name: 'Media Library', href: '/admin/media', icon: ImageIcon },
   { name: 'Affiliate Links', href: '/admin/affiliates', icon: LinkIcon },
+  { name: 'Affiliate Sheet', href: '/admin/affiliate-sheet', icon: Sheet },
   { name: 'SEO', href: '/admin/seo', icon: Search },
   { name: 'Settings', href: '/admin/settings', icon: Settings },
 ]

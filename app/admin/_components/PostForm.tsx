@@ -35,7 +35,7 @@ export default function PostForm({ post }: Props) {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="space-y-1">
             <label className="text-sm font-medium text-ink-700 dark:text-ink-300">Status *</label>
-            <select name="status" defaultValue={post?.status ?? 'DRAFT'} required className="admin-input">
+            <select name="status" defaultValue={post?.status ?? 'PUBLISHED'} required className="admin-input">
               <option value="DRAFT">Draft</option>
               <option value="PUBLISHED">Published</option>
               <option value="SCHEDULED">Scheduled</option>

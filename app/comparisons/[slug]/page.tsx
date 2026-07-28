@@ -1,21 +1,30 @@
 
 import { notFound } from "next/navigation";
 import Script from "next/script";
-import { comparisons, getComparisonBySlug } from "@/lib/data/comparisons";
-import { getProductBySlug, getProductsByCategory } from "@/lib/data/products";
+import { compileMDX } from "next-mdx-remote/rsc";
+import {
+  getComparisonBySlugFromDb,
+  getComparisonSlugsFromDb,
+} from "@/lib/cms/comparisons";
+import {
+  getProductBySlugFromDb,
+  getProductsByCategoryFromDb,
+} from "@/lib/cms/tools";
+import { mdxComponents } from "@/mdx-components";
 import { ComparisonTable } from "@/components/affiliate/ComparisonTable";
 import { RelatedProducts } from "@/components/affiliate/RelatedProducts";
 import { FAQAccordion } from "@/components/ui/FAQAccordion";
 import { buildMetadata, articleJsonLd, breadcrumbJsonLd, faqJsonLd } from "@/lib/seo";
 import { formatDate } from "@/lib/utils";
 
-export function generateStaticParams() {
-  return comparisons.map((comparison) => ({ slug: comparison.slug }));
+export async function generateStaticParams() {
+  const slugs = await getComparisonSlugsFromDb();
+  return slugs.map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const comparison = getComparisonBySlug(slug);
+  const comparison = await getComparisonBySlugFromDb(slug);
   if (!comparison) return {};
 
   return buildMetadata({
@@ -30,17 +39,24 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 export default async function ComparisonDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const comparison = getComparisonBySlug(slug);
+  const comparison = await getComparisonBySlugFromDb(slug);
   if (!comparison) notFound();
 
-  const products = comparison.productSlugs
-    .map((s) => getProductBySlug(s))
-    .filter((p): p is NonNullable<typeof p> => Boolean(p));
+  const products = (
+    await Promise.all(comparison.productSlugs.map((s) => getProductBySlugFromDb(s)))
+  ).filter((p): p is NonNullable<typeof p> => Boolean(p));
 
   const primary = products[0];
   const alternatives = primary
-    ? getProductsByCategory(primary.category).filter((p) => !comparison.productSlugs.includes(p.slug)).slice(0, 3)
+    ? (await getProductsByCategoryFromDb(primary.category))
+        .filter((p) => !comparison.productSlugs.includes(p.slug))
+        .slice(0, 3)
     : [];
+
+  const { content: bodyContent } = await compileMDX({
+    source: comparison.content,
+    components: mdxComponents,
+  });
 
   const faqs = primary
     ? [
@@ -90,22 +106,40 @@ export default async function ComparisonDetailPage({ params }: { params: Promise
       </header>
 
       <div className="mx-auto mt-12 max-w-4xl">
-        <ComparisonTable
-          products={products}
-          rows={[
-            { label: "Starting price", values: products.map((p) => p.startingPrice ?? "Contact sales") },
-            { label: "Pricing model", values: products.map((p) => p.pricing) },
-            { label: "Best for", values: products.map((p) => p.bestFor) },
-            { label: "Free plan", values: products.map((p) => p.pricing === "Freemium" || p.pricing === "Free") },
-          ]}
-        />
+        {products.length >= 2 && (
+          <ComparisonTable
+            products={products}
+            rows={[
+              { label: "Starting price", values: products.map((p) => p.startingPrice ?? "Contact sales") },
+              { label: "Pricing model", values: products.map((p) => p.pricing) },
+              { label: "Best for", values: products.map((p) => p.bestFor) },
+              { label: "Free plan", values: products.map((p) => p.pricing === "Freemium" || p.pricing === "Free") },
+            ]}
+          />
+        )}
+
+        <div className="prose prose-ink mx-auto mt-10 dark:prose-invert">{bodyContent}</div>
+
+        {comparison.sections.length > 0 && (
+          <div className="mt-12 space-y-8">
+            {comparison.sections.map((section) => (
+              <div key={section.title} className="rounded-2xl border border-ink-100 bg-white p-6 dark:border-ink-800 dark:bg-ink-900">
+                <h2 className="font-display text-xl font-semibold text-ink-900 dark:text-ink-50">{section.title}</h2>
+                <p className="mt-3 text-ink-600 dark:text-ink-300 whitespace-pre-wrap">{section.content}</p>
+              </div>
+            ))}
+          </div>
+        )}
 
         {comparison.winner && primary && (
           <div className="mt-8 rounded-2xl border border-signal-100 bg-signal-50 p-6 text-center dark:border-signal-800/50 dark:bg-signal-900/20">
             <p className="eyebrow">Our pick</p>
             <p className="mt-2 text-ink-700 dark:text-ink-200">
-              For most teams, <strong className="text-ink-900 dark:text-white">{primary.name}</strong> is the stronger choice — see
-              the full review for details on where it falls short.
+              For most teams,{" "}
+              <strong className="text-ink-900 dark:text-white">
+                {products.find((p) => p.slug === comparison.winner)?.name ?? primary.name}
+              </strong>{" "}
+              is the stronger choice — see the full review for details on where it falls short.
             </p>
           </div>
         )}

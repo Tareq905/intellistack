@@ -1,18 +1,19 @@
 
 import { notFound } from "next/navigation";
 import Script from "next/script";
-import { categories, getCategoryBySlug } from "@/lib/data/categories";
-import { getProductsByCategory } from "@/lib/data/products";
+import { getCategoryBySlugFromDb, getCategorySlugsFromDb } from "@/lib/cms/categories";
+import { getProductsByCategoryFromDb } from "@/lib/cms/tools";
 import { ProductCard } from "@/components/affiliate/ProductCard";
 import { buildMetadata, breadcrumbJsonLd } from "@/lib/seo";
 
-export function generateStaticParams() {
-  return categories.map((category) => ({ slug: category.slug }));
+export async function generateStaticParams() {
+  const slugs = await getCategorySlugsFromDb();
+  return slugs.map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const category = getCategoryBySlug(slug);
+  const category = await getCategoryBySlugFromDb(slug);
   if (!category) return {};
 
   return buildMetadata({
@@ -24,10 +25,10 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 export default async function CategoryDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const category = getCategoryBySlug(slug);
+  const category = await getCategoryBySlugFromDb(slug);
   if (!category) notFound();
 
-  const products = getProductsByCategory(slug);
+  const products = await getProductsByCategoryFromDb(slug);
   const breadcrumb = breadcrumbJsonLd([
     { name: "Home", path: "/" },
     { name: "Categories", path: "/categories" },

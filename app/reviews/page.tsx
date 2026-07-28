@@ -1,5 +1,5 @@
 import { buildMetadata } from "@/lib/seo";
-import { reviews } from "@/lib/data/reviews";
+import { getPublishedReviews } from "@/lib/cms/tools";
 import { ReviewCard } from "@/components/affiliate/ReviewCard";
 
 export const metadata = buildMetadata({
@@ -8,7 +8,9 @@ export const metadata = buildMetadata({
   path: "/reviews",
 });
 
-export default function ReviewsPage() {
+export default async function ReviewsPage() {
+  const reviews = await getPublishedReviews();
+
   return (
     <div className="container-page py-16">
       <header className="mx-auto max-w-2xl text-center">

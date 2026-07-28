@@ -2,7 +2,7 @@
 import { Suspense } from "react";
 import { buildMetadata } from "@/lib/seo";
 import { getAllPosts } from "@/lib/blog";
-import { categories } from "@/lib/data/categories";
+import { getCategoriesFromDb } from "@/lib/cms/categories";
 import { PostCard } from "@/components/blog/PostCard";
 import { CategoryFilter } from "@/components/blog/CategoryFilter";
 import { SearchBar } from "@/components/blog/SearchBar";
@@ -23,7 +23,8 @@ export default async function BlogPage({
   searchParams: Promise<{ category?: string; q?: string; page?: string }>;
 }) {
   const params = await searchParams;
-  const allPosts = getAllPosts();
+  const allPosts = await getAllPosts();
+  const categories = await getCategoriesFromDb();
 
   let filtered = allPosts;
   if (params.category) {

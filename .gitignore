@@ -5,6 +5,8 @@ out
 .wrangler
 *.log
 .env*.local
+google-service-account.json
+*.credentials.json
 .DS_Store
 
 # OpenNext

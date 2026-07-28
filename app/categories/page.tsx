@@ -1,7 +1,7 @@
 import Link from "next/link";
 import * as Icons from "lucide-react";
 import { buildMetadata } from "@/lib/seo";
-import { categories } from "@/lib/data/categories";
+import { getCategoriesFromDb } from "@/lib/cms/categories";
 
 export const metadata = buildMetadata({
   title: "Software Categories",
@@ -9,7 +9,8 @@ export const metadata = buildMetadata({
   path: "/categories",
 });
 
-export default function CategoriesPage() {
+export default async function CategoriesPage() {
+  const categories = await getCategoriesFromDb();
   return (
     <div className="container-page py-16">
       <header className="mx-auto max-w-2xl text-center">

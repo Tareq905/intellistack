@@ -1,22 +1,23 @@
-
 import { notFound } from "next/navigation";
 import Script from "next/script";
-import { compileMDX } from "next-mdx-remote/rsc";
+import { evaluate } from "next-mdx-remote-client/rsc";
 import { getAllPostSlugs, getPostBySlug, getRelatedPosts } from "@/lib/blog";
 import { mdxComponents } from "@/mdx-components";
+import { escapeMdxSpecialChars } from "@/lib/mdx-safe";
 import { PostCard } from "@/components/blog/PostCard";
 import { NewsletterSignup } from "@/components/affiliate/NewsletterSignup";
 import { buildMetadata, articleJsonLd, breadcrumbJsonLd } from "@/lib/seo";
 import { formatDate } from "@/lib/utils";
 import { Badge } from "@/components/ui/Badge";
 
-export function generateStaticParams() {
-  return getAllPostSlugs().map((slug) => ({ slug }));
+export async function generateStaticParams() {
+  const slugs = await getAllPostSlugs();
+  return slugs.map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const post = getPostBySlug(slug);
+  const post = await getPostBySlug(slug);
   if (!post) return {};
 
   return buildMetadata({
@@ -33,15 +34,35 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const post = getPostBySlug(slug);
+  const post = await getPostBySlug(slug);
   if (!post) notFound();
 
-  const { content } = await compileMDX({
-    source: post.content,
-    components: mdxComponents,
-  });
+  let content: React.ReactNode;
 
-  const related = getRelatedPosts(post.meta);
+  try {
+    if (!post.content || post.content.trim() === "") {
+      throw new Error(`Post "${slug}" has empty content in DB`);
+    }
+
+    const result = await evaluate({
+      source: escapeMdxSpecialChars(post.content),
+      components: mdxComponents,
+    });
+
+    content = result.content;
+  } catch (err) {
+    console.error(`[blog] MDX compile failed for slug "${slug}":`, err);
+
+    content = (
+      <div className="rounded-xl border border-red-200 bg-red-50 p-6 text-sm text-red-700">
+        This post couldn&apos;t be rendered right now. Our team has been notified.
+        <br />
+        <span className="text-xs text-red-500">(slug: {slug})</span>
+      </div>
+    );
+  }
+
+  const related = await getRelatedPosts(post.meta);
 
   const jsonLd = [
     articleJsonLd({

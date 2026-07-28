@@ -91,6 +91,7 @@ export default async function AdminDashboardPage() {
             { label: 'New Post', href: '/admin/blog/new' },
             { label: 'Add Category', href: '/admin/categories/new' },
             { label: 'Add Affiliate Link', href: '/admin/affiliates/new' },
+            { label: 'Affiliate Sheet', href: '/admin/affiliate-sheet' },
             { label: 'SEO Settings', href: '/admin/seo' },
             { label: 'Site Settings', href: '/admin/settings' },
           ].map((item) => (

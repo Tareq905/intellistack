@@ -4,6 +4,7 @@ import prisma from '@/lib/prisma'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { z } from 'zod'
+import { revalidatePublicContent } from '@/lib/revalidate-public'
 
 const categorySchema = z.object({
   name: z.string().min(1),
@@ -17,6 +18,7 @@ export async function createCategory(formData: FormData) {
   if (!parsed.success) return { error: parsed.error.flatten().fieldErrors }
   await prisma.category.create({ data: parsed.data })
   revalidatePath('/admin/categories')
+  revalidatePublicContent({ categories: true, tools: true })
   redirect('/admin/categories')
 }
 
@@ -25,10 +27,12 @@ export async function updateCategory(id: string, formData: FormData) {
   if (!parsed.success) return { error: parsed.error.flatten().fieldErrors }
   await prisma.category.update({ where: { id }, data: parsed.data })
   revalidatePath('/admin/categories')
+  revalidatePublicContent({ categories: true, tools: true })
   redirect('/admin/categories')
 }
 
 export async function deleteCategory(id: string) {
   await prisma.category.delete({ where: { id } })
   revalidatePath('/admin/categories')
+  revalidatePublicContent({ categories: true, tools: true })
 }

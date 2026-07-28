@@ -2,13 +2,13 @@ import Link from "next/link";
 import * as Icons from "lucide-react";
 import { ArrowUpRight, ArrowRight, TestTube, Briefcase, Timer, ShieldCheck, Star } from "lucide-react";
 import { buildMetadata } from "@/lib/seo";
-import { categories } from "@/lib/data/categories";
-import { getTrendingProducts } from "@/lib/data/products";
-import { reviews } from "@/lib/data/reviews";
-import { comparisons } from "@/lib/data/comparisons";
+import { getCategoriesFromDb } from "@/lib/cms/categories";
+import { getTrendingProductsFromDb, getPublishedReviews } from "@/lib/cms/tools";
+import { getPublishedComparisons } from "@/lib/cms/comparisons";
 import { ProductCard } from "@/components/affiliate/ProductCard";
 import { ReviewCard } from "@/components/affiliate/ReviewCard";
 import { NewsletterSignup } from "@/components/affiliate/NewsletterSignup";
+import type { Category } from "@/types";
 
 export const metadata = buildMetadata({
   title: "Quantas — Discover the Best AI Tools",
@@ -17,8 +17,13 @@ export const metadata = buildMetadata({
   path: "/",
 });
 
-export default function HomePage() {
-  const trendingProducts = getTrendingProducts();
+export default async function HomePage() {
+  const [categories, trendingProducts, reviews, comparisons] = await Promise.all([
+    getCategoriesFromDb(),
+    getTrendingProductsFromDb(),
+    getPublishedReviews(),
+    getPublishedComparisons(),
+  ]);
   const latestReviews = reviews.slice(0, 3);
   const latestComparisons = comparisons.slice(0, 3);
 
@@ -28,7 +33,7 @@ export default function HomePage() {
       
       <TrendingAITools />
 
-      <FeaturedCategories />
+      <FeaturedCategories categories={categories} />
 
       <HowWeTest />
 
@@ -245,7 +250,7 @@ function HowWeTest() {
   );
 }
 
-function FeaturedCategories() {
+function FeaturedCategories({ categories }: { categories: Category[] }) {
   return (
     <section className="py-20">
       <div className="container-page">

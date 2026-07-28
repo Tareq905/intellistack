@@ -4,6 +4,7 @@ import prisma from '@/lib/prisma'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { z } from 'zod'
+import { revalidatePublicContent } from '@/lib/revalidate-public'
 
 const toolSchema = z.object({
   name: z.string().min(1, 'Name is required'),
@@ -37,6 +38,8 @@ export async function createTool(formData: FormData) {
     data: { ...data, officialWebsite: officialWebsite || null, affiliateUrl: affiliateUrl || null, logoUrl: logoUrl || null },
   })
   revalidatePath('/admin/tools')
+  revalidatePublicContent({ tools: true, categories: true })
+  revalidatePath(`/reviews/${parsed.data.slug}`)
   redirect('/admin/tools')
 }
 
@@ -55,10 +58,15 @@ export async function updateTool(id: string, formData: FormData) {
     data: { ...data, officialWebsite: officialWebsite || null, affiliateUrl: affiliateUrl || null, logoUrl: logoUrl || null },
   })
   revalidatePath('/admin/tools')
+  revalidatePublicContent({ tools: true, categories: true })
+  revalidatePath(`/reviews/${parsed.data.slug}`)
   redirect('/admin/tools')
 }
 
 export async function deleteTool(id: string) {
+  const existing = await prisma.tool.findUnique({ where: { id }, select: { slug: true } })
   await prisma.tool.delete({ where: { id } })
   revalidatePath('/admin/tools')
+  revalidatePublicContent({ tools: true, categories: true })
+  if (existing?.slug) revalidatePath(`/reviews/${existing.slug}`)
 }

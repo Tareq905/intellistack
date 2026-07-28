@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { getAllPosts } from "@/lib/blog";
 import { siteConfig } from "@/lib/config";
 
-export const dynamic = "force-static";
+export const dynamic = "force-dynamic";
 
 function escapeXml(value: string) {
   return value
@@ -14,7 +14,7 @@ function escapeXml(value: string) {
 }
 
 export async function GET() {
-  const posts = getAllPosts();
+  const posts = await getAllPosts();
 
   const items = posts
     .map(

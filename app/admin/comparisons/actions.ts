@@ -4,6 +4,7 @@ import prisma from '@/lib/prisma'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { z } from 'zod'
+import { revalidatePublicContent } from '@/lib/revalidate-public'
 
 const comparisonSchema = z.object({
   slug: z.string().min(1).regex(/^[a-z0-9-]+$/),
@@ -52,10 +53,15 @@ export async function createComparison(formData: FormData) {
   })
 
   revalidatePath('/admin/comparisons')
+  revalidatePublicContent({ comparisons: true })
+  revalidatePath(`/comparisons/${parsed.data.slug}`)
   redirect('/admin/comparisons')
 }
 
 export async function deleteComparison(id: string) {
+  const existing = await prisma.comparison.findUnique({ where: { id }, select: { slug: true } })
   await prisma.comparison.delete({ where: { id } })
   revalidatePath('/admin/comparisons')
+  revalidatePublicContent({ comparisons: true })
+  if (existing?.slug) revalidatePath(`/comparisons/${existing.slug}`)
 }
