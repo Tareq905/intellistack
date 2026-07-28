@@ -1,7 +1,7 @@
 
 import { notFound } from "next/navigation";
 import Script from "next/script";
-import { compileMDX } from "next-mdx-remote/rsc";
+import { evaluate } from "next-mdx-remote-client/rsc";
 import {
   getComparisonBySlugFromDb,
   getComparisonSlugsFromDb,
@@ -53,7 +53,7 @@ export default async function ComparisonDetailPage({ params }: { params: Promise
         .slice(0, 3)
     : [];
 
-  const { content: bodyContent } = await compileMDX({
+  const { content: bodyContent } = await evaluate({
     source: comparison.content,
     components: mdxComponents,
   });

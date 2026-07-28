@@ -1,7 +1,7 @@
 
 import { notFound } from "next/navigation";
 import Script from "next/script";
-import { compileMDX } from "next-mdx-remote/rsc";
+import { evaluate } from "next-mdx-remote-client/rsc";
 import {
   getPublishedToolSlugs,
   getReviewBySlugFromDb,
@@ -48,7 +48,7 @@ export default async function ReviewDetailPage({ params }: { params: Promise<{ s
     ? (await getProductsByCategoryFromDb(product.category)).filter((p) => p.slug !== product.slug).slice(0, 3)
     : [];
 
-  const { content: reviewBody } = await compileMDX({
+  const { content: reviewBody } = await evaluate({
     source: review.fullReview,
     components: mdxComponents,
   });
