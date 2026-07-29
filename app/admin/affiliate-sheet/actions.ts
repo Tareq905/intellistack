@@ -4,11 +4,11 @@ import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { z } from 'zod'
 import {
-  appendAffiliateSheetEntry,
-  deleteAffiliateSheetEntry,
-  updateAffiliateSheetEntry,
-  formatSheetDate,
-} from '@/lib/google-sheets/affiliate-database'
+  appendAffiliateResearchEntry,
+  deleteAffiliateResearchEntry,
+  updateAffiliateResearchEntry,
+  formatResearchDate,
+} from '@/lib/affiliate-research'
 
 const entrySchema = z.object({
   toolName: z.string().min(1, 'Tool name is required'),
@@ -61,7 +61,7 @@ function toEntry(data: z.infer<typeof entrySchema>) {
     reviewStatus: data.reviewStatus ?? '',
     comparisonStatus: data.comparisonStatus ?? '',
     bestToolsStatus: data.bestToolsStatus ?? '',
-    researchDate: data.researchDate ?? formatSheetDate(),
+    researchDate: data.researchDate ?? formatResearchDate(),
   }
 }
 
@@ -70,7 +70,7 @@ export async function createAffiliateSheetEntry(formData: FormData) {
   if (!parsed.success) return { error: parsed.error.flatten().fieldErrors }
 
   try {
-    await appendAffiliateSheetEntry(toEntry(parsed.data))
+    await appendAffiliateResearchEntry(toEntry(parsed.data))
   } catch (error) {
     return { error: { _form: [(error as Error).message] } }
   }
@@ -79,12 +79,12 @@ export async function createAffiliateSheetEntry(formData: FormData) {
   redirect('/admin/affiliate-sheet')
 }
 
-export async function updateAffiliateSheetEntryAction(rowNumber: number, formData: FormData) {
+export async function updateAffiliateSheetEntryAction(id: string, formData: FormData) {
   const parsed = parseEntry(formData)
   if (!parsed.success) return { error: parsed.error.flatten().fieldErrors }
 
   try {
-    await updateAffiliateSheetEntry(rowNumber, toEntry(parsed.data))
+    await updateAffiliateResearchEntry(id, toEntry(parsed.data))
   } catch (error) {
     return { error: { _form: [(error as Error).message] } }
   }
@@ -93,8 +93,8 @@ export async function updateAffiliateSheetEntryAction(rowNumber: number, formDat
   redirect('/admin/affiliate-sheet')
 }
 
-export async function deleteAffiliateSheetEntryAction(rowNumber: number) {
-  await deleteAffiliateSheetEntry(rowNumber)
+export async function deleteAffiliateSheetEntryAction(id: string) {
+  await deleteAffiliateResearchEntry(id)
   revalidatePath('/admin/affiliate-sheet')
   redirect('/admin/affiliate-sheet')
 }

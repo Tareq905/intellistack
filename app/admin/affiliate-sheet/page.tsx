@@ -1,21 +1,10 @@
 import Link from 'next/link'
-import { Plus, Edit, Trash2, ExternalLink, AlertTriangle, Sheet } from 'lucide-react'
-import { listAffiliateSheetEntries } from '@/lib/google-sheets/affiliate-database'
-import { AFFILIATE_SHEET_URL, isGoogleSheetsConfigured } from '@/lib/google-sheets/config'
+import { Plus, Edit, Trash2, Download, Sheet } from 'lucide-react'
+import { listAffiliateResearchEntries } from '@/lib/affiliate-research'
 import { deleteAffiliateSheetEntryAction } from './actions'
 
 export default async function AdminAffiliateSheetPage() {
-  const configured = isGoogleSheetsConfigured()
-  let entries: Awaited<ReturnType<typeof listAffiliateSheetEntries>> = []
-  let loadError: string | null = null
-
-  if (configured) {
-    try {
-      entries = await listAffiliateSheetEntries()
-    } catch (error) {
-      loadError = (error as Error).message
-    }
-  }
+  const entries = await listAffiliateResearchEntries()
 
   return (
     <div className="space-y-6">
@@ -23,21 +12,19 @@ export default async function AdminAffiliateSheetPage() {
         <div>
           <h1 className="text-2xl font-display font-semibold text-ink-900 dark:text-ink-50 flex items-center gap-2">
             <Sheet className="w-6 h-6 text-signal-600" />
-            Affiliate Database (Google Sheet)
+            Affiliate Database
           </h1>
           <p className="text-sm text-ink-500 dark:text-ink-400 mt-1">
-            Admin-only affiliate research synced directly to your Google Sheet. No frontend connection.
+            Admin-only affiliate research synced directly in the database.
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-2">
           <a
-            href={AFFILIATE_SHEET_URL}
-            target="_blank"
-            rel="noopener noreferrer"
+            href="/api/export-affiliates"
             className="inline-flex items-center gap-2 px-4 py-2 border border-ink-200 dark:border-ink-700 text-ink-700 dark:text-ink-300 text-sm font-medium rounded-lg hover:bg-ink-50 dark:hover:bg-ink-800 transition-colors"
           >
-            <ExternalLink className="w-4 h-4" />
-            Open Sheet
+            <Download className="w-4 h-4" />
+            Export CSV
           </a>
           <Link
             href="/admin/affiliate-sheet/new"
@@ -48,33 +35,6 @@ export default async function AdminAffiliateSheetPage() {
           </Link>
         </div>
       </div>
-
-      {!configured && (
-        <div className="flex items-start gap-3 rounded-xl border border-amber-200 bg-amber-50 dark:border-amber-800 dark:bg-amber-900/20 p-4">
-          <AlertTriangle className="w-5 h-5 text-amber-500 mt-0.5 shrink-0" />
-          <div className="text-sm text-amber-800 dark:text-amber-300 space-y-2">
-            <p className="font-semibold">Google Sheets credentials not configured</p>
-            <p>Add these to <code className="font-mono bg-amber-100 dark:bg-amber-900 px-1 rounded">.env.local</code>:</p>
-            <ul className="list-disc pl-5 space-y-1 text-amber-700 dark:text-amber-400">
-              <li><code>GOOGLE_SERVICE_ACCOUNT_EMAIL</code></li>
-              <li><code>GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY</code></li>
-              <li>Optional: <code>GOOGLE_SHEETS_AFFILIATE_ID</code> (defaults to your sheet)</li>
-              <li>Optional: <code>GOOGLE_SHEETS_AFFILIATE_TAB</code> (default: Affiliate Tools)</li>
-            </ul>
-            <p>Then share the sheet with the service account email as <strong>Editor</strong>.</p>
-          </div>
-        </div>
-      )}
-
-      {loadError && (
-        <div className="flex items-start gap-3 rounded-xl border border-red-200 bg-red-50 dark:border-red-900 dark:bg-red-900/20 p-4">
-          <AlertTriangle className="w-5 h-5 text-red-500 mt-0.5 shrink-0" />
-          <div>
-            <p className="text-sm font-semibold text-red-800 dark:text-red-300">Could not load Google Sheet</p>
-            <p className="text-sm text-red-700 dark:text-red-400 mt-0.5">{loadError}</p>
-          </div>
-        </div>
-      )}
 
       <div className="bg-white dark:bg-ink-900 border border-ink-200 dark:border-ink-800 rounded-xl2 overflow-hidden shadow-card">
         <div className="overflow-x-auto">
@@ -94,12 +54,12 @@ export default async function AdminAffiliateSheetPage() {
               {entries.length === 0 ? (
                 <tr>
                   <td colSpan={7} className="px-6 py-12 text-center text-ink-500">
-                    {configured ? 'No affiliate entries in the sheet yet.' : 'Configure Google credentials to sync with your sheet.'}
+                    No affiliate entries in the database yet.
                   </td>
                 </tr>
               ) : (
                 entries.map((entry) => (
-                  <tr key={entry.rowNumber} className="hover:bg-ink-50/50 dark:hover:bg-ink-800/50 transition-colors">
+                  <tr key={entry.id} className="hover:bg-ink-50/50 dark:hover:bg-ink-800/50 transition-colors">
                     <td className="px-4 py-3">
                       <div className="font-medium text-ink-900 dark:text-ink-50">{entry.toolName}</div>
                       {entry.officialWebsite && (
@@ -124,12 +84,12 @@ export default async function AdminAffiliateSheetPage() {
                     <td className="px-4 py-3 text-right">
                       <div className="flex items-center justify-end gap-2">
                         <Link
-                          href={`/admin/affiliate-sheet/${entry.rowNumber}/edit`}
+                          href={`/admin/affiliate-sheet/${entry.id}/edit`}
                           className="p-2 text-ink-400 hover:text-signal-600 transition-colors rounded-md hover:bg-ink-100 dark:hover:bg-ink-800"
                         >
                           <Edit className="w-4 h-4" />
                         </Link>
-                        <form action={deleteAffiliateSheetEntryAction.bind(null, entry.rowNumber)}>
+                        <form action={deleteAffiliateSheetEntryAction.bind(null, entry.id)}>
                           <button type="submit" className="p-2 text-ink-400 hover:text-red-600 transition-colors rounded-md hover:bg-red-50 dark:hover:bg-red-900/20">
                             <Trash2 className="w-4 h-4" />
                           </button>

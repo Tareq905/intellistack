@@ -3,14 +3,14 @@
 import { useActionState } from 'react'
 import Link from 'next/link'
 import { createAffiliateSheetEntry, updateAffiliateSheetEntryAction } from '../affiliate-sheet/actions'
-import type { AffiliateSheetEntry } from '@/lib/google-sheets/affiliate-database'
+import type { AffiliateResearchEntry } from '@/lib/affiliate-research'
 
-type Props = { entry?: AffiliateSheetEntry }
+type Props = { entry?: AffiliateResearchEntry }
 type State = { error?: Record<string, string[]> }
 
 export default function AffiliateSheetForm({ entry }: Props) {
   const action = entry
-    ? updateAffiliateSheetEntryAction.bind(null, entry.rowNumber)
+    ? updateAffiliateSheetEntryAction.bind(null, entry.id)
     : createAffiliateSheetEntry
   const [state, formAction, isPending] = useActionState<State, FormData>(
     async (_, fd) => { const r = await action(fd); return r ?? {} },
@@ -147,7 +147,7 @@ export default function AffiliateSheetForm({ entry }: Props) {
       <div className="flex items-center gap-3">
         <button type="submit" disabled={isPending} className="px-6 py-2.5 bg-signal-600 hover:bg-signal-700 disabled:opacity-50 text-white text-sm font-medium rounded-lg transition-colors flex items-center gap-2">
           {isPending && <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />}
-          {entry ? 'Update Sheet Row' : 'Add to Google Sheet'}
+          {entry ? 'Update Entry' : 'Add Entry'}
         </button>
         <Link href="/admin/affiliate-sheet" className="px-6 py-2.5 text-ink-600 dark:text-ink-300 hover:bg-ink-100 dark:hover:bg-ink-800 text-sm font-medium rounded-lg transition-colors">
           Cancel
