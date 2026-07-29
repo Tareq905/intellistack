@@ -11,7 +11,7 @@ import { NewsletterSignup } from "@/components/affiliate/NewsletterSignup";
 import type { Category } from "@/types";
 
 export const metadata = buildMetadata({
-  title: "Quantas — Discover the Best AI Tools",
+  title: "Quantas",
   description:
     "We test AI tools, compare them side-by-side, and publish honest reviews so you can confidently choose the right software for your workflow.",
   path: "/",
